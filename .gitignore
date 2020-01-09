@@ -1,0 +1,10 @@
+#ignore
+/venv/*
+/.idea/*
+*.aux
+*.log
+*.pdf
+*.gz
+*.toc
+*.png
+*.jpg

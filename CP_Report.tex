@@ -1,0 +1,57 @@
+\documentclass[a4paper,12pt]{article} %размер бумаги устанавливаем А4, шрифт 12пунктов
+\usepackage[T2A]{fontenc}
+
+\usepackage[utf8]{inputenc} % указать кодировку русского текста
+\usepackage{float}
+\usepackage[russian]{babel} % указать, что язык текста - русский
+
+\usepackage{amsfonts}
+
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\newcommand{\imgh}[3]
+{
+	\begin{figure}[H]
+		\center{\includegraphics[width=0.8\textwidth]{#2}}
+		\caption{#3}
+	\end{figure}
+}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{1pt}%
+    \setlength{\parskip}{1pt}}%
+  {\end{itemize}}
+
+
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{1pt}%
+    \setlength{\parskip}{1pt}}%
+  {\end{enumerate}}
+
+\usepackage{geometry}
+\geometry{left= 3cm}
+\geometry{right=3cm}
+\geometry{top=3cm}
+\geometry{bottom=3cm} 
+
+\begin{document}
+\input{RefProject-Title}
+
+\tableofcontents
+\newpage
+
+\input{RefProject-Task}
+\input{RefProject-Theory}
+\input{RefProject-Realization}
+\input{RefProject-Result}
+\input{RefProject-Literature}
+\input{RefProject-Applications}
+\newpage
+
+\end{document}

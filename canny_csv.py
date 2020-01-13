@@ -2,6 +2,12 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 
+# BGR color format
+color_dict = {'blue': (255, 0, 0), 'green': (0, 255, 0),
+              'red': (0, 0, 255), 'yellow': (0, 255, 255),
+              'white': (255, 255, 255), 'black': (0, 0, 0),
+              'magenta': (255, 0, 255), 'orange': (0, 128, 255)}
+
 
 def unit_vector(vector):
     """ Returns the unit vector of the vector.  """
@@ -60,6 +66,7 @@ class circle_params:
         self.R = R
 
 
+hough_circle_color = color_dict['green']
 hough_circles_params = [circle_params(2, 200, 1, 30, 18, 23), circle_params(2, 200, 1, 30, 18, 23),
                         circle_params(2, 130, 1, 34, 3, 12), circle_params(2, 135, 1, 70, 20, 70),
                         circle_params(2, 135, 1, 30, 20, 70), circle_params(2, 95, 1, 32, 11, 24)]
@@ -81,12 +88,13 @@ def hough_circles(src, index):
         for i in circles[0, :]:
             center = (i[0], i[1])
             # circle center
-            cv.circle(src, center, 1, (0, 0, 255), 1)
+            cv.circle(src, center, 1, hough_circle_color, 1)
             # circle outline
             radius = i[2]
-            cv.circle(src, center, radius, (0, 0, 255), 1)
+            cv.circle(src, center, radius, hough_circle_color, 1)
             print(radius)
-
+    # cv.namedWindow('detected circles', cv.WINDOW_NORMAL)
+    # cv.resizeWindow('detected circles', 1240, 1080)
     cv.imshow("detected circles", src)
 
 
@@ -152,14 +160,15 @@ def hough_lines(src, low, high):
     cv.imshow("detected lines", dst)
 
 
-threshold_color_index = 3
-thresholds = [[(97, 250, 0), (115, 255, 255)],
-              [(25, 70, 118), (86, 255, 255)],
-              [(16, 130, 88), (39, 255, 255)],
-              [(0, 130, 195), (16, 255, 255)],
-              [(0, 74, 200), (17, 206, 255)],
-              [(0, 1, 251), (255, 69, 255)],
-              [(0, 2, 250), (111, 2, 255)]]
+threshold_color_index = 4
+thresholds = [[(97, 250, 0), (115, 255, 255)],  # blue
+              [(25, 70, 118), (86, 255, 255)],  # green
+              [(16, 130, 88), (39, 255, 255)],  # yellow
+              [(0, 130, 195), (16, 255, 255)],  # red&orange
+              [(0, 130, 195), (13, 255, 255)],  # red
+              [(0, 74, 200), (17, 206, 255)],  # pink
+              [(0, 1, 251), (255, 69, 255)],  # white
+              [(0, 2, 250), (111, 2, 255)]]  # white
 
 
 def findContour(img):
@@ -202,20 +211,6 @@ def findContour(img):
     detected_edges = cv.Canny(img_blur, low_threshold, low_threshold * ratio, kernel_size)
     mask = detected_edges != 0
     dst = img * (mask[:, :, None].astype(img.dtype))
-    # low = (97, 250, 0) #blue
-    # low = (25, 70, 118)  # green
-    # low = (16, 130, 88) #yellow
-    # low = (0, 130, 195) #orange-red
-    # low = (0, 74, 200)  # pink
-    # low = (0, 1, 251) #white
-    # low = (0, 2, 250)  # white(2)
-    # high = (115, 255, 255) #blue
-    # high = (86, 255, 255)  # green
-    # high = (39, 255, 255) #yellow
-    # high = (16, 255, 255) #orange-red
-    # high = (17, 206, 255)  # pink
-    # high = (255, 69, 255) #white
-    # high = (111, 2, 255)  # white(2)
 
     low = thresholds[threshold_color_index][0]
     high = thresholds[threshold_color_index][1]
@@ -226,9 +221,11 @@ def findContour(img):
     res = dst * (mask[:, :, None].astype(dst.dtype))
     # cv.imshow('mask result', res)
     # hough_circles(img)
-    # hough_circles(res, 5)
-    # cv.imshow("image", dst)
-    hough_lines(img, low, high)
+    hough_circles(res, 5)
+    cv.namedWindow('jpg', cv.WINDOW_NORMAL)
+    cv.resizeWindow('jpg', 640, 480)
+    cv.imshow("jpg", dst)
+    # hough_lines(img, low, high)
     cv.waitKey(0)
 
 
@@ -319,6 +316,6 @@ def main():
 img = cv.imread("./IK_images/img_thermal_1575383333609.jpg")
 # img = cv.imread("./IK_images/sudoku.png")
 
-main()
+# main()
 # color_trackbars()
 findContour(img)

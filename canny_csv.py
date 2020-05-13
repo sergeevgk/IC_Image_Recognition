@@ -317,5 +317,5 @@ img = cv.imread("./IK_images/img_thermal_1575383333609.jpg")
 # img = cv.imread("./IK_images/sudoku.png")
 
 # main()
-# color_trackbars()
-findContour(img)
+color_trackbars()
+# findContour(img)
